@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+               http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context-4.0.xsd
+               http://www.springframework.org/schema/tx
+               http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+               http://www.springframework.org/schema/aop
+               http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+               http://www.springframework.org/schema/mvc
+        		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	
+	<!--引入配置属性文件 -->
+	<context:property-placeholder location="classpath:play.properties" />
+
+	<!-- 自动扫描service注入为bean -->
+	<context:component-scan base-package="net.kangshao.play.**.**.service" />
+	
+	 <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
+   <!--  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <property name="basePackage" value="net.kangshao.play.**.**.dao" />  
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
+    </bean>  --> 
+    <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <property name="basePackage" value="net.kangshao.play"/>
+        <property name="annotationClass" value="net.kangshao.play.common.persistence.annotation.MyBatisDao"/>
+    </bean>
+
+	<!-- 数据源配置, 使用 Druid 数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClass}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<property name="filters" value="stat" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="1" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="20" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="1" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="60000" />
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="33" />
+
+		<!-- 用来检测有效sql -->
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+
+		<!-- <property name="validationQuery" value="${validationQuery}" /> <property 
+			name="testOnBorrow" value="false" /> <property name="testOnReturn" value="false" 
+			/> <property name="testWhileIdle" value="true" /> -->
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" />
+		<!-- 监控数据库 -->
+		<!-- <property name="filters" value="mergeStat" /> -->
+	</bean>
+
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:net/kangshao/play/**/**/dao/mapping/*Dao.xml
+				</value>
+			</array>
+		</property>
+		<!-- spring-mybatis分页插件配置 -->
+		<property name="typeAliasesPackage" value="net.kangshao.play.**.**.entity" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>
+							dialect=mysql
+							reasonable=true
+							supportMethodsArguments=true
+							returnPageInfo=check
+							params=count=countSql
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 通过编程织入切面 -->
+	<aop:aspectj-autoproxy />
+	
+	<aop:config>
+		<aop:pointcut id="appService"
+			expression="execution(* net.kangshao.play.**.**.service..*Service*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="appService" />
+	</aop:config>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 注解方式配置事物 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+
+	<!-- 拦截器方式配置事物 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	
+</beans>  

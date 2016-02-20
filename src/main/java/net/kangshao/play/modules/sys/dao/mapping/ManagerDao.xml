@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.kangshao.play.modules.sys.dao.IManagerDao">	
+    <sql id="userColumns">
+    	ma.id as id,
+    	ma.name as name,
+    	ma.realityName as realityName,
+    	ma.password as password,
+    	ma.idCard as idCard,
+    	ma.age as age,
+    	ma.sex as sex,
+    	ma.mobile as mobile,
+    	ma.email as email,
+    	ma.loginIP as loginIP,
+    	ma.loginTime as loginTime,
+    	ma.isLocked as isLocked
+    </sql>
+    
+	<!-- 根据编号获得用户 -->
+	<select id="findManagerById" resultType="net.kangshao.play.modules.sys.entity.Manager" parameterType="long">
+		SELECT
+		<include refid="userColumns"/>
+		FROM t_sys_manager ma WHERE ma.id = #{id}
+	</select>
+	
+	<!-- 查询用户集合 -->
+	<select id="findManagerList" resultType="net.kangshao.play.modules.sys.entity.Manager" parameterType="net.kangshao.play.modules.sys.entity.Manager">
+		SELECT
+		<include refid="userColumns"/>
+		FROM t_sys_manager ma 
+	</select>
+	
+	
+	<!-- 删除管理员 -->
+	<delete id="deleteManagerById" parameterType="long">
+		DELETE FROM t_sys_manager WHERE id = #{id}
+	</delete>
+	
+	<!-- 更新管理员 -->
+	<update id="updateManager" parameterType="net.kangshao.play.modules.sys.entity.Manager">
+		update t_sys_manager ma set 
+    	ma.name = #{name},
+    	ma.realityName = #{realityName},
+    	ma.password = #{password},
+    	ma.idCard = #{idCard},
+    	ma.age = #{age},
+    	ma.sex = #{sex},
+    	ma.mobile = #{mobile},
+    	ma.email = #{email},
+    	ma.loginIP = #{loginIP},
+    	ma.loginTime = #{loginTime},
+    	ma.isLocked = #{isLocked}
+    	where ma.id = #{id}
+	</update>
+	
+	<!-- 添加管理员 -->
+	<insert id="addManager" parameterType="net.kangshao.play.modules.sys.entity.Manager">
+		insert into t_sys_manager(
+			name,
+			realityName,
+			password,
+			age,
+			sex,
+			mobile,
+			email,
+			loginIP,
+			loginTime,
+			isLocked
+		) values (
+			#{name},
+			#{realityName},
+			#{password},
+			#{age},
+			#{sex},
+			#{mobile},
+			#{email},
+			#{loginIP},
+			#{loginTime},
+			#{isLocked}
+		); 
+	</insert>
+</mapper>
