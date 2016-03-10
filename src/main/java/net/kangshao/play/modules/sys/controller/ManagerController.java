@@ -2,19 +2,19 @@ package net.kangshao.play.modules.sys.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+
+import net.kangshao.play.common.controller.BaseController;
 import net.kangshao.play.modules.sys.entity.Manager;
-import net.kangshao.play.modules.sys.service.IManagerService;
+import net.kangshao.play.modules.sys.service.ManagerService;
 /**
  * 后台系统管理员控制器
 * @ClassName: ManagerContorller
@@ -25,15 +25,15 @@ import net.kangshao.play.modules.sys.service.IManagerService;
  */
 @Controller
 @RequestMapping(value="/sys/manager")
-public class ManagerController {
+public class ManagerController extends BaseController{
 	@Autowired
-	private IManagerService managerService;
+	private ManagerService managerService;
 	
 	@RequestMapping(value="/managerList")
 	public String managerList(Manager manager,Model model,
 			@RequestParam(required = false, defaultValue = "1") int pageNum,
 			@RequestParam(required = false, defaultValue = "10") int pageSize){
-		Page<Manager> page = (Page<Manager>) managerService.findManagerList(manager, pageNum, pageSize);
+		PageInfo<Manager> page =  managerService.findManagerList(manager, pageNum, pageSize);
 		model.addAttribute("managerPage",page);
 		return "/modules/sys/ManagerContorller/managerList";
 	}
@@ -58,10 +58,7 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value="/updateManager")
-	public String updateManager(@Valid Manager manager,BindingResult result,RedirectAttributes ra){
-		if(result.hasErrors()){
-			return "/modules/sys/ManagerContorller/editManagerInit";
-		}
+	public String updateManager(Manager manager,RedirectAttributes ra){
 		managerService.updateManager(manager);
 		return "redirect:/sys/manager/managerList";
 	}

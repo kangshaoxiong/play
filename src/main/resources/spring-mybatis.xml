@@ -18,7 +18,7 @@
 	<context:property-placeholder location="classpath:play.properties" />
 
 	<!-- 自动扫描service注入为bean -->
-	<context:component-scan base-package="net.kangshao.play.**.**.service" />
+	<context:component-scan base-package="net.kangshao.play" />
 	
 	 <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
    <!--  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
@@ -82,12 +82,12 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations">
 			<array>
-				<value>classpath:net/kangshao/play/**/**/dao/mapping/*Dao.xml
+				<value>classpath:net/kangshao/play/**/mapping/*Dao.xml
 				</value>
 			</array>
 		</property>
 		<!-- spring-mybatis分页插件配置 -->
-		<property name="typeAliasesPackage" value="net.kangshao.play.**.**.entity" />
+		<property name="typeAliasesPackage" value="net.kangshao.play" />
 		<property name="plugins">
 			<array>
 				<bean class="com.github.pagehelper.PageHelper">

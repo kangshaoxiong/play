@@ -19,7 +19,7 @@ import javax.validation.Payload;
 @Documented
 @Constraint(validatedBy = {MobileValidator.class})
 public @interface Mobile {
-	String message() default "{play.validator.constraints.Mobile.message}";
+	String message() default "手机号码格式错误";
 
 	Class<?>[] groups() default { };
 

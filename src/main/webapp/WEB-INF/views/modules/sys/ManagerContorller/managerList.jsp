@@ -25,7 +25,7 @@
 			<th>是否锁定</th>
 			<td>操作</td>
 		</tr>
-		<c:forEach items="${managerPage}" var="manager">
+		<c:forEach items="${managerPage.list}" var="manager">
 		<tr>
 			<td>${manager.id}</td>
 			<td>${manager.name}</td>

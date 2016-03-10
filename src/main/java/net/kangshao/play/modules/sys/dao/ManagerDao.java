@@ -5,7 +5,7 @@ import java.util.List;
 import net.kangshao.play.common.persistence.annotation.MyBatisDao;
 import net.kangshao.play.modules.sys.entity.Manager;
 @MyBatisDao
-public interface IManagerDao {
+public interface ManagerDao {
 	public Manager findManagerById(long id);
 	public List<Manager> findManagerList(Manager manager);
 	public int deleteManagerById(long id);
