@@ -18,7 +18,7 @@
 	<!--引入配置属性文件 -->
 	<context:property-placeholder location="classpath:play.properties" />
 
-	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
+	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 @service为bean-->
 	<context:component-scan base-package="net.kangshao.play" />
 
 	<!--RequestMappingHandlerAdapter：信息转换 -->
