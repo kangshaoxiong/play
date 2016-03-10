@@ -14,6 +14,9 @@
         	   http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<mvc:default-servlet-handler />
+	
+	<!--引入配置属性文件 -->
+	<context:property-placeholder location="classpath:play.properties" />
 
 	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
 	<context:component-scan base-package="net.kangshao.play" />
@@ -100,6 +103,14 @@
 			</list>
 		</property>
 	</bean>
+	
+	
+	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
+	<mvc:default-servlet-handler />
+	<!-- 静态资源映射 -->
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
+	<!-- 定义无Controller的path<->view直接映射 -->
+	<mvc:view-controller path="/" view-name="redirect:${sys.view.index}"/>
 
 	<!-- 国际化配置 -->
 	<bean id="localeResolver"

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping(value="/manager/sys")
+@RequestMapping(value="/manager")
 public class SysLoginController {
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public String login(){
