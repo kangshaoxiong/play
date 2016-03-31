@@ -1,16 +1,14 @@
-package net.kangshao.play.modules.sys.service;
+package net.kangshao.play.modules.crud.service;
 
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import net.kangshao.play.modules.sys.dao.ManagerDao;
-import net.kangshao.play.modules.sys.entity.Manager;
+import net.kangshao.play.modules.crud.dao.ManagerDao;
+import net.kangshao.play.modules.crud.entity.Manager;
 
 @Service
 public class ManagerService{

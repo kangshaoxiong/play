@@ -40,15 +40,15 @@
 			<td>${manager.loginTime}</td>
 			<td>${manager.isLocked}</td>
 			<td>
-			<a href="/play/sys/manager/deleteManager?id=${manager.id}">删除</a>
-			<a href="/play/sys/manager/editManagerInit?id=${manager.id}">修改</a>
+			<a href="/play/crud/manager/deleteManager?id=${manager.id}">删除</a>
+			<a href="/play/crud/manager/editManagerInit?id=${manager.id}">修改</a>
 			</td>
 		</tr>
 		</c:forEach>
 		<tr>
-			<td><a href="/play/sys/manager/editManagerInit">添加</a></td>
-			<td><a href="/play/sys/manager/managerList?pageNum=${managerPage.getPageNum()-1}">上一页</a></td>
-			<td><a href="/play/sys/manager/managerList?pageNum=${managerPage.getPageNum()+1}">下一页</a></td>
+			<td><a href="/play/crud/manager/editManagerInit">添加</a></td>
+			<td><a href="/play/crud/manager/managerList?pageNum=${managerPage.getPageNum()-1}">上一页</a></td>
+			<td><a href="/play/crud/manager/managerList?pageNum=${managerPage.getPageNum()+1}">下一页</a></td>
 		</tr>
 	</table>
 </body>

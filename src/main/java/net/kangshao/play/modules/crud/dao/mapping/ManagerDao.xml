@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.kangshao.play.modules.sys.dao.ManagerDao">	
+<mapper namespace="net.kangshao.play.modules.crud.dao.ManagerDao">	
     <sql id="userColumns">
     	ma.id as id,
     	ma.name as name,
@@ -17,14 +17,14 @@
     </sql>
     
 	<!-- 根据编号获得用户 -->
-	<select id="findManagerById" resultType="net.kangshao.play.modules.sys.entity.Manager" parameterType="long">
+	<select id="findManagerById" resultType="net.kangshao.play.modules.crud.entity.Manager" parameterType="long">
 		SELECT
 		<include refid="userColumns"/>
 		FROM t_sys_manager ma WHERE ma.id = #{id}
 	</select>
 	
 	<!-- 查询用户集合 -->
-	<select id="findManagerList" resultType="net.kangshao.play.modules.sys.entity.Manager" parameterType="net.kangshao.play.modules.sys.entity.Manager">
+	<select id="findManagerList" resultType="net.kangshao.play.modules.crud.entity.Manager" parameterType="net.kangshao.play.modules.crud.entity.Manager">
 		SELECT
 		<include refid="userColumns"/>
 		FROM t_sys_manager ma 
@@ -37,7 +37,7 @@
 	</delete>
 	
 	<!-- 更新管理员 -->
-	<update id="updateManager" parameterType="net.kangshao.play.modules.sys.entity.Manager">
+	<update id="updateManager" parameterType="net.kangshao.play.modules.crud.entity.Manager">
 		update t_sys_manager ma set 
     	ma.name = #{name},
     	ma.realityName = #{realityName},
@@ -54,7 +54,7 @@
 	</update>
 	
 	<!-- 添加管理员 -->
-	<insert id="addManager" parameterType="net.kangshao.play.modules.sys.entity.Manager">
+	<insert id="addManager" parameterType="net.kangshao.play.modules.crud.entity.Manager">
 		insert into t_sys_manager(
 			name,
 			realityName,

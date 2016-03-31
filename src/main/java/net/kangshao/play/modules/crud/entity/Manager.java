@@ -1,4 +1,4 @@
-package net.kangshao.play.modules.sys.entity;
+package net.kangshao.play.modules.crud.entity;
 
 import java.util.Date;
 

@@ -1,9 +1,8 @@
-package net.kangshao.play.modules.sys.dao;
+package net.kangshao.play.modules.crud.dao;
 
 import java.util.List;
-
 import net.kangshao.play.common.persistence.annotation.MyBatisDao;
-import net.kangshao.play.modules.sys.entity.Manager;
+import net.kangshao.play.modules.crud.entity.Manager;
 @MyBatisDao
 public interface ManagerDao {
 	public Manager findManagerById(long id);

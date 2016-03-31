@@ -11,10 +11,10 @@
 <body>
 	<c:choose>	
 		<c:when test="${manager!=null}">
-			<form action="/play/sys/manager/updateManager" method="post">
+			<form action="/play/crud/manager/updateManager" method="post">
 		</c:when>
 		<c:otherwise>
-			<form action="/play/sys/manager/addManager" method="post">
+			<form action="/play/crud/manager/addManager" method="post">
 		</c:otherwise>
 	</c:choose>
 	<table border="1px;" align="center">
